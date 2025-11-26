@@ -1,6 +1,107 @@
 # PL_2025_ML_Prediction
 Here I used the Random Classifier to Predict the outcome of the 2025/26 Premier League season
 
+# ⚽ Premier League 2025/26 Prediction using RandomForestClassifier
+
+![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python)
+![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-yellow?logo=pandas)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML%20Model-orange?logo=scikit-learn)
+![Matplotlib](https://img.shields.io/badge/Visualization-Graphs-red?logo=matplotlib)
+![Status](https://img.shields.io/badge/Project-Research%20Prototype-green)
+
+---
+
+## 📌 Project Overview
+
+This project uses a **RandomForestClassifier** to predict the final **2025/26 Premier League standings** based on multiple historical Premier League seasons.
+
+The model is trained using league summary statistics (points, wins, draws, losses, goals for/against, goal difference) from:
+
+
+## The **2023/24 season** is used as the most recent feature set, and predictions are generated for all **20 clubs participating in 2025/26**, including the three promoted clubs:
+
+
+Because these clubs did not play in 2023/24, their feature values are assigned as the **average of the bottom three clubs** from that season.
+
+---
+
+## 🧠 How the Model Works
+
+### 1. Dataset Processing  
+- Parses CSV match files such as:  
+  `eng1_2018-19.csv, eng1_2019-20.csv, ..., eng1_2023-24.csv`  
+- Each CSV contains **380 matches** (20 teams × 38 games)  
+- Extracts:  
+  - Goals and results from `FT` column  
+  - Home & away points based on match outcomes  
+
+### 2. Feature Engineering  
+For each season, the script computes:  
+
+| Feature         | Description                          |
+|-----------------|--------------------------------------|
+| points          | League points total                  |
+| wins / draws / losses | Match outcomes               |
+| goals_for / goals_against | Total goals scored/conceded |
+| goal_diff       | Goals For − Goals Against            |
+| position        | Final league ranking                 |
+
+### 3. Machine Learning  
+
+| Parameter     | Value                           |
+|--------------|----------------------------------|
+| Model         | RandomForestClassifier           |
+| Trees         | 100                              |
+| Max depth     | 8                                |
+| Scaling       | StandardScaler                   |
+| Class weight  | Balanced                         |
+| Seed          | 42 (reproducible results)        |
+
+Training predicts **season N+1 standings** using **season N features**.
+
+---
+
+## 📊 2025/26 Predictions (Expected Standings)
+
+| Rank | Team             | Expected Position (mean) |
+|------|------------------|--------------------------|
+| 1    | Arsenal          | 1.43                     |
+| 2    | Man City         | 2.23                     |
+| 3    | Liverpool        | 4.59                     |
+| 4    | Tottenham        | 6.15                     |
+| 5    | Aston Villa      | 6.37                     |
+| 6    | Chelsea          | 6.79                     |
+| 7    | Newcastle        | 7.91                     |
+| 8    | Man United       | 8.94                     |
+| 9    | Everton          | 11.32                    |
+| 10   | Brentford        | 12.05                    |
+| 11   | Brighton         | 12.34                    |
+| 12   | Crystal Palace   | 12.58                    |
+| 13   | Wolves           | 12.69                    |
+| 14   | Nott'm Forest    | 12.71                    |
+| 15   | Bournemouth      | 12.92                    |
+| 16   | Fulham           | 13.82                    |
+| 17   | West Ham         | 14.83                    |
+| 18   | Sheffield United | 15.19                    |
+| 19   | Leeds United     | 15.96                    |
+| 20   | Sunderland       | 15.96                    |
+
+> ℹ️ *Lower “Expected Position (mean)” value → better predicted rank.*
+
+---
+
+## 📈 Visualization
+
+The project generates a barplot showing expected positions (rank 1 = best):
+
+```python
+sns.barplot(x="expected_position", y="team", data=predictions)
+plt.gca().invert_xaxis()
+plt.savefig("results/predicted_league_table.png")
+
+
+
+
 # PL_2025_ML_Prediction
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
